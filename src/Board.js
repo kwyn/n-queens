@@ -174,7 +174,7 @@
       while(i < n && j < n){
         diag.push(this.get(i)[j]);
         i++;
-        j++
+        j++;
       }
       return diag;
     },
@@ -184,7 +184,7 @@
       var diag = [];
       var found = false;
       while(i < n && j < n){
-        if(this.get(i)[j] && found){ //conflict found
+        if(this.get(i)[j] && found){ //conflict found so return true
           return true;
         } 
         if(this.get(i)[j]){
@@ -196,18 +196,61 @@
       return false;
     },
 
+    getMinorDiag: function(i, j){ //must start in upper right
+      var n = this.get('n');
+      var diag = [];
+      //var found = false;
+      while(i < n && j >= 0){
+        diag.push(this.get(i)[j]);
+        i++;
+        j--;
+      }
+      return diag;
+    },
+
+    checkMinorDiag: function(i, j){ //must start in upper right
+      var n = this.get('n');
+      var diag = [];
+      var found = false;
+      while(i < n && j >= 0){
+        if(this.get(i)[j] && found){ //conflict found so return true
+          return true;
+        } 
+        if(this.get(i)[j]){
+          found = true;
+        }
+        i++;
+        j--;
+      }
+      return false;
+    },
+
 
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     // 
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow){
-      return false; // fixme
+
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function(){
-
+      var n = this.get('n');
+        var i = 0;
+        var j = n - 1;
+        //console.log(this.getMinorDiag(0,2));
+        //debugger;
+        for (i = 0; i < n - 1; i++){
+          if(this.checkMinorDiag(i, j))
+            return true;
+        }
+        i = 0;
+        for(j = 1; j < n - 1; j++){
+          if(this.checkMinorDiag(i,j))
+            return true;
+        }
+      return false;
     }
 
     
