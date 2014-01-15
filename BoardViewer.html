@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>n-rooks solver</title>
+    <style type="text/css">
+      .square {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+      }
+
+      .positive {
+        background-color: lightgrey;
+      }
+
+      .negative {
+        background-color: grey;
+      }
+
+      .inConflict{
+          background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="lib/jquery-1.8.3.js"></script>
+    <script src="lib/underscore.js"></script>
+    <script src="lib/backbone.js"></script>
+    <script src="src/Board.js"></script>
+    <script src="src/BoardView.js"></script>
+    <script src="src/solvers.js"></script>
+    <script>
+      // This function uses a board visualizer lets you view an interactive version of any piece matrix.
+      window.displayBoard = function(matrix){
+        $('body').html(
+          new BoardView({
+            model: new Board(matrix)
+          }).render()
+        );
+      };
+      $(function(){
+        // this is a pre-baked solution for n-queens in the n = 4 case, rendered to the screen using our handy visualizer.
+        displayBoard([
+          [0, 1, 0, 0],
+          [0, 0, 0, 1],
+          [1, 0, 0, 0],
+          [0, 0, 1, 0]
+        ]);
+
+        var n = 4;
+        findNRooksSolution(n);
+        countNRooksSolutions(n);
+        findNQueensSolution(n);
+        countNQueensSolutions(n);
+      });
+    </script>
+  </body>
+</html>
