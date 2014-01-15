@@ -153,9 +153,48 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function(){
-      return false; // fixme
+      var n = this.get('n');
+      var i = 0;
+      var j = 0;
+      for (i = 0; i < n - 1; i++){
+        if(this.checkMajorDiag(i, j))
+          return true;
+      }
+      i = 0;
+      for(j = 1; j < n -1; j++){
+        if(this.checkMajorDiag(i,j))
+          return true;
+      }
+      return false;
+    },
+    
+    getMajorDiag: function(i, j){
+      var n = this.get('n');
+      var diag = [];
+      while(i < n && j < n){
+        diag.push(this.get(i)[j]);
+        i++;
+        j++
+      }
+      return diag;
     },
 
+    checkMajorDiag: function(i, j){ //must start in upper left
+      var n = this.get('n');
+      var diag = [];
+      var found = false;
+      while(i < n && j < n){
+        if(this.get(i)[j] && found){ //conflict found
+          return true;
+        } 
+        if(this.get(i)[j]){
+          found = true;
+        }
+        i++;
+        j++;
+      }
+      return false;
+    },
 
 
     // Minor Diagonals - go from top-right to bottom-left
@@ -168,8 +207,10 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function(){
-      return false; // fixme
+
     }
+
+    
 
     /*--------------------  End of Helper Functions  ---------------------*/
 
