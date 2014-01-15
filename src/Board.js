@@ -24,6 +24,14 @@
       }, this);
     },
 
+    // columns: function(){
+    //   return _(_.range(this.get('n'))).map(function(colIndex){
+    //       _.each(this.rows(), function(row){
+    //         row[colIndex];
+    //       }, this);
+    //     }, this);
+    // },
+
     togglePiece: function(rowIndex, colIndex){
       this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
       this.trigger('change');
@@ -79,12 +87,28 @@
     // 
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex){
-      return false; // fixme
+      //this is the board, and row is a row on the board. 
+      var row = this.get(rowIndex);
+      var count = 0;
+      _.each(row, function(space){
+        count += space;
+      });
+
+      return count > 1; // fixme
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function(){
-      return false; // fixme
+      return _.reduce(this.rows(), function(memo, row, rowIndex){
+          return memo || this.hasRowConflictAt(rowIndex);
+      }, false, this);
+      console.log(this.columns);  
+      // for(var i = 0; i < size; i++){
+      //   if( this.hasRowConflictAt(i) ){
+      //     return true;
+      //   }
+      // }
+      // return false; // fixme
     },
 
 
@@ -94,6 +118,7 @@
     // 
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex){
+
       return false; // fixme
     },
 
