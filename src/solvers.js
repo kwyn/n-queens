@@ -13,52 +13,90 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 window.findNRooksSolution = function(n){
-  var solution = undefined; //fixme
-  //var window.solutions;
+   //fixme
+  var board = new Board({n : n});
+  var available = [];
 
-  //var board = new Board({ n : n});
-  //board.set(0)[0] = 1;
-/// var board = new Board([[1,0,0],[0,1,0],[0,0,1]])
-  //generate all initial positions.
-  var obj = {};
-  for(var i = 0; i < n; i++){
-    for(var j = 0; j < n; j++){
-      var board = new Board({n : n});
-      board.togglePiece(i,j);
-      //debugger;
-      obj[board.rows()]=board;
-    }
-  }
-  //debugger;
-  window.genBoards(obj, n);
+  var previousMove = [[0,0]]
+  var possibleMoves = [];
 
-  solution = board;
-
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
-};
-
-window.genBoards = function(obj , n){
-var newBoards = {};
-//debugger;
-for(var key in obj){
-  var board = obj[key];
-  for(var i = 0; i < n ; i++){
-    for(var j = 0; j < n; j++){
-      if( !board.get(i)[j] ){
-        board.togglePiece(i,j);
-        //debugger;
-        if( !board.hasAnyRooksConflicts() ){
-          //may memory leak board so that it is not constant
-          newBoards[board.rows()] = board;
-        }
-        board.togglePiece(i,j);
-        debugger;
+  var makePossibleMove = function(count, possibleMoves, solutions){
+    solutions = solutions || [] ;
+    if(count){
+      for(var i = 0; i < n; i++){
+        for(var j = 0; j < n; j++){
+          //check if it is a previous move
+          //debugger;
+          if( !board.get(i)[j] ){
+            board.togglePiece(i,j);
+            if( !board.hasAnyRooksConflicts() ){
+              //possibleMoves.push( [i,j] );
+              if(count){
+                console.log(count);
+                count--;
+                console.log(count);
+                return solutions.concat(makePossibleMove(count, possibleMoves, solutions) );
+              }
+            }
+            board.togglePiece(i,j);
+          }
+        } 
       }
+    }else{
+      console.log(board.rows());
+      return board.rows();  
     }
-  }
-}
+  };
+  
+  solution = makePossibleMove(n);
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  
+  return solution;
 
+  // var togglePrev = function(previousMoves){
+  //   _.each(previousMoves, function(move){
+  //     //arr has row and column values;
+  //     board.togglePiece(move[0], move[1]);
+  //   });
+  // }
+
+  // var findPossible = function(previousMoves){
+  //   var posisbleMoves = [];
+  //   togglePrev(PreviousMoves);
+  //   _.each(board.rows() , function(row, rowIndex){
+  //     _.each(row, function(colIndex){
+        
+  //       if( !board.get(rowIndex)[colIndex] ){
+  //         board.togglePiece(rowIndex, colIndex);
+          
+  //         if( !board.hasAnyRooksConflicts() ){
+  //           possibleMoves.push( [i,j] );
+  //         }
+          
+  //         board.togglePiece(rowIndex, colIndex);
+  //       }
+
+  //     });
+  //   });
+  //   return possibleMoves;
+  // };
+
+  // var makePossibleMove = function(previousMoves, count){
+  //   var previousMoves = previousMoves || [];
+  //   var possibleMoves = findPossible(previousMoves);
+  //   if(!count){
+  //   _.each(possibleMoves, function(move){
+  //     board.togglePiece(move[0], move[1]);
+  //     previousMoves.push(); 
+  //   });
+  //   makePossibleMove(possibleMoves, previousMoves, count--);
+  //   }
+  //   return board.rows();
+  // }
+  
+  //gets possible next moves 
+  //Given a board that has the previous move toggled
+  
 },
 
 
